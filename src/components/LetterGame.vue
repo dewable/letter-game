@@ -1,11 +1,15 @@
 <template>
-    <button @click="reset">Start Over</button>
+    <button @click="reset">Start Over</button> <br/>
+    <label for="highestStreak">highest streak:</label>
+    <p name=highestStreak>{{ highestStreak }}</p>
     <h2>{{ letter1 }}</h2>
     <div><button @click="answerBefore">Before</button> or <button @click="answerAfter">After</button></div>
     <h2>{{ letter2 }}</h2>
     <p>{{ `${letter1} ${isBefore ? 'comes' : 'does not come'} before ${letter2}` }}</p>
     <label for="score">score:</label>
-    <p>{{ score }}</p>
+    <p name="score">{{ score }}</p>
+    <label for="streak">streak:</label>
+    <p name=streak>{{ streak }}</p>
 </template>
 
 <script>
@@ -18,6 +22,8 @@
                 isBefore: null,
                 answer: '',
                 score: 0,
+                streak: 0,
+                highestStreak: 0,
             }
         },
         mounted() {
@@ -39,13 +45,25 @@
                 this.isBefore = l1.charCodeAt(0) - l2.charCodeAt(0) < 0;
             },
             answerBefore() {
-                if (this.isBefore) this.score++;
-                else this.score--;
-                this.generateLetters();
+                if (this.isBefore) this.correctAnswer();
+                else this.incorrectAnswer();
             },
             answerAfter() {
-                if (!this.isBefore) this.score++;
-                else this.score--;
+                if (!this.isBefore) this.correctAnswer();
+                else this.incorrectAnswer();
+            },
+            correctAnswer() {
+                this.score++;
+                this.streak++;
+
+                if (this.streak > this.highestStreak) this.highestStreak = this.streak;
+
+                this.generateLetters();
+            },
+            incorrectAnswer() {
+                this.score--;
+                this.streak = 0;
+
                 this.generateLetters();
             },
             reset() {

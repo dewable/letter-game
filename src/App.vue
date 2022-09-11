@@ -1,7 +1,7 @@
 <template>
 	<div class="header">
 		<h2>Letter Game</h2>
-		<h3>By: Brian Carrington</h3>
+		<h3>By: Brian Carrington | <a target="_blank" href="https://github.com/dewable/letter-game">Code</a></h3>
 	</div>
 	<div class="game">
 		<letter-game/>
