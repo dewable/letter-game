@@ -1,26 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+	<div class="header">
+		<h2>Letter Game</h2>
+		<h3>By: Brian Carrington</h3>
+	</div>
+	<div class="game">
+		<letter-game/>
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+	import LetterGame from './components/LetterGame';
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+
+	export default {
+		name: 'App',
+		components: {
+			LetterGame
+		}
+	}
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+	.header {
+		text-align: center;
+	}
+	.game {
+		border-style: outset;
+		text-align: center;
+	}
 </style>
