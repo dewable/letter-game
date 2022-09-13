@@ -1,11 +1,15 @@
 <template>
     <button @click="reset">Start Over</button> <br/>
+    <label for="life">timer:</label>
+    <p name=life>{{ life }}</p>
     <label for="highestStreak">highest streak:</label>
     <p name=highestStreak>{{ highestStreak }}</p>
     <h2>{{ letter1 }}</h2>
-    <div><button @click="answerBefore">Before</button> or <button @click="answerAfter">After</button></div>
+    <div>
+        <button @click="answer(true)" :disabled="gameOver">Before</button> or
+        <button @click="answer(false)" :disabled="gameOver">After</button>
+    </div>
     <h2>{{ letter2 }}</h2>
-    <p>{{ `${letter1} ${isBefore ? 'comes' : 'does not come'} before ${letter2}` }}</p>
     <label for="score">score:</label>
     <p name="score">{{ score }}</p>
     <label for="streak">streak:</label>
@@ -20,10 +24,12 @@
                 letter1: '',
                 letter2: '',
                 isBefore: null,
-                answer: '',
                 score: 0,
                 streak: 0,
                 highestStreak: 0,
+                interval: null,
+                life: 1000,
+                gameOver: false,
             }
         },
         mounted() {
@@ -31,6 +37,9 @@
         },
         methods: {
             generateLetters() {
+                if (this.interval) clearInterval(this.interval);
+                this.currentTime = 0;
+
                 const alphabet = "abcdefghijklmnopqrstuvwxyz".toUpperCase();
                 let l1, l2;
                 
@@ -43,18 +52,23 @@
                 this.letter2 = l2;
                 
                 this.isBefore = l1.charCodeAt(0) - l2.charCodeAt(0) < 0;
+
+                this.interval = setInterval(this.checkLife, 10);
             },
-            answerBefore() {
-                if (this.isBefore) this.correctAnswer();
-                else this.incorrectAnswer();
+            checkLife() {
+                if (--this.life !== 0) return;
+
+                clearInterval(this.interval);
+                this.gameOver = true;
             },
-            answerAfter() {
-                if (!this.isBefore) this.correctAnswer();
+            answer(userAnswer) {
+                if (this.isBefore === userAnswer) this.correctAnswer();
                 else this.incorrectAnswer();
             },
             correctAnswer() {
                 this.score++;
                 this.streak++;
+                this.life = 1000;
 
                 if (this.streak > this.highestStreak) this.highestStreak = this.streak;
 
@@ -68,6 +82,8 @@
             },
             reset() {
                 this.score = 0;
+                this.life = 1000;
+                this.gameOver = false;
                 this.generateLetters();
             }
         }
