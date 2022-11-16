@@ -1,4 +1,5 @@
 # letter-game
+Quickly answer which letter comes first to get the highest score.
 
 ## Project setup
 ```
